@@ -10,13 +10,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
-import com.vignesh.atherassignment.SwipeDirection
+import com.vignesh.atherassignment.core.Util
 
 @Composable
 fun PuzzleBoardComposable(
-    modifier: Modifier= Modifier,
+    modifier: Modifier = Modifier,
     board: List<List<Int>>,
-    onSwipe: (SwipeDirection) -> Unit
+    onSwipe: (Util.SwipeDirection) -> Unit
 ) {
     val swipeThreshold = 100f
     var offsetX by remember { mutableFloatStateOf(0f) }
@@ -29,10 +29,10 @@ fun PuzzleBoardComposable(
                 detectDragGestures(
                     onDragEnd = {
                         when {
-                            offsetX > swipeThreshold -> onSwipe(SwipeDirection.RIGHT)
-                            offsetX < -swipeThreshold -> onSwipe(SwipeDirection.LEFT)
-                            offsetY > swipeThreshold -> onSwipe(SwipeDirection.DOWN)
-                            offsetY < -swipeThreshold -> onSwipe(SwipeDirection.UP)
+                            offsetX > swipeThreshold -> onSwipe(Util.SwipeDirection.RIGHT)
+                            offsetX < -swipeThreshold -> onSwipe(Util.SwipeDirection.LEFT)
+                            offsetY > swipeThreshold -> onSwipe(Util.SwipeDirection.DOWN)
+                            offsetY < -swipeThreshold -> onSwipe(Util.SwipeDirection.UP)
                         }
                         offsetX = 0f
                         offsetY = 0f
@@ -45,6 +45,8 @@ fun PuzzleBoardComposable(
                 )
             }
     ) {
-        GameBoardPuzzleBoard(board)
+        GameBoardPuzzleBoard(
+            board = board
+        )
     }
 }

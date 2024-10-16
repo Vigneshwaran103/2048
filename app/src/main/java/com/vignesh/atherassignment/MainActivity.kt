@@ -25,6 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.vignesh.atherassignment.core.Util
 import com.vignesh.atherassignment.ui.composables.PuzzleBoardComposable
 import com.vignesh.atherassignment.ui.theme.AtherAssignmentTheme
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -39,11 +40,11 @@ class MainActivity : ComponentActivity() {
                     state = viewModel.state,
                     onSwipe = {
                         viewModel.handleIntent(
-                            GameIntent.Swipe(it)
+                            MainAction.Swipe(it)
                         )
                     },
                     onRestartClick = {
-                        viewModel.handleIntent(GameIntent.Restart)
+                        viewModel.handleIntent(MainAction.Restart)
                     }
                 )
             }
@@ -52,9 +53,9 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     fun GameScreen(
-        state: MainGameState,
+        state: MainState,
         modifier: Modifier = Modifier,
-        onSwipe: (SwipeDirection) -> Unit,
+        onSwipe: (Util.SwipeDirection) -> Unit,
         onRestartClick: () -> Unit
     ) {
         Column(

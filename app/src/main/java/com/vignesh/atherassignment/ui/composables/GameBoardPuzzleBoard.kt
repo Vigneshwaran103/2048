@@ -19,7 +19,7 @@ fun GameBoardPuzzleBoard(
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 for (tile in row) {
-                    Tile(tileValue = tile)
+                    PuzzleTile(tileValue = tile)
                 }
             }
         }

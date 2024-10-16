@@ -3,23 +3,23 @@ package com.vignesh.atherassignment.data
 import com.vignesh.atherassignment.domain.MainRepository
 
 class MainRepositoryImpl : MainRepository {
-    override fun swipeRight(board: List<List<Int>>): List<List<Int>> {
-        return board.map { row ->
+    override fun swipeRight(puzzleBoard: List<List<Int>>): List<List<Int>> {
+        return puzzleBoard.map { row ->
             val reversedRow = row.reversed()
             val compressedRow = compressTiles(reversedRow)
-            val mergedRow = merge(compressedRow)
+            val mergedRow = tileMerger(compressedRow)
             compressTiles(mergedRow).reversed()
         }
     }
 
-    override fun checkGameOver(board: List<List<Int>>): Boolean {
-        if (board.any { row -> row.contains(0) }) {
+    override fun checkGameOver(puzzleBoard: List<List<Int>>): Boolean {
+        if (puzzleBoard.any { row -> row.contains(0) }) {
             return false
         }
 
         for (i in 0 until 4) {
             for (j in 0 until 3) {
-                if (board[i][j] == board[i][j + 1]) {
+                if (puzzleBoard[i][j] == puzzleBoard[i][j + 1]) {
                     return false
                 }
             }
@@ -27,7 +27,7 @@ class MainRepositoryImpl : MainRepository {
 
         for (j in 0 until 4) {
             for (i in 0 until 3) {
-                if (board[i][j] == board[i + 1][j]) {
+                if (puzzleBoard[i][j] == puzzleBoard[i + 1][j]) {
                     return false
                 }
             }
@@ -36,25 +36,25 @@ class MainRepositoryImpl : MainRepository {
         return true
     }
 
-    override fun puzzleSolved(board: List<List<Int>>): Boolean {
-        return board.flatten().any { it == 2048 }
+    override fun isPuzzleSolved(puzzleBoard: List<List<Int>>): Boolean {
+        return puzzleBoard.flatten().any { it == 2048 }
     }
 
-    override fun swipeLeft(board: List<List<Int>>): List<List<Int>> {
-        return board.map { row ->
+    override fun swipeLeft(puzzleBoard: List<List<Int>>): List<List<Int>> {
+        return puzzleBoard.map { row ->
             val compressedRow = compressTiles(row)
-            val mergedRow = merge(compressedRow)
+            val mergedRow = tileMerger(compressedRow)
             compressTiles(mergedRow)
         }
     }
 
-    override fun swipeUp(board: List<List<Int>>): List<List<Int>> {
+    override fun swipeUp(puzzleBoard: List<List<Int>>): List<List<Int>> {
         val newBoard = MutableList(4) { MutableList(4) { 0 } }
         for (col in 0 until 4) {
-            val column = board.map { row -> row[col] }
+            val column = puzzleBoard.map { row -> row[col] }
 
             val compressedColumn = compressTiles(column)
-            val mergedColumn = merge(compressedColumn)
+            val mergedColumn = tileMerger(compressedColumn)
             val finalColumn = compressTiles(mergedColumn)
 
             for (row in 0 until 4) {
@@ -65,15 +65,15 @@ class MainRepositoryImpl : MainRepository {
         return newBoard
     }
 
-    override fun swipeDown(board: List<List<Int>>): List<List<Int>> {
+    override fun swipeDown(puzzleBoard: List<List<Int>>): List<List<Int>> {
         val newBoard = MutableList(4) { MutableList(4) { 0 } }
 
         for (col in 0 until 4) {
-            val column = board.map { row -> row[col] }
+            val column = puzzleBoard.map { row -> row[col] }
 
             val reversedColumn = column.reversed()
             val compressedColumn = compressTiles(reversedColumn)
-            val mergedColumn = merge(compressedColumn)
+            val mergedColumn = tileMerger(compressedColumn)
             val finalColumn = compressTiles(mergedColumn).reversed()
 
             for (row in 0 until 4) {
@@ -91,7 +91,7 @@ class MainRepositoryImpl : MainRepository {
         return newRow
     }
 
-    override fun merge(row: List<Int>): List<Int> {
+    override fun tileMerger(row: List<Int>): List<Int> {
         val newRow = row.toMutableList()
         for (i in 0 until newRow.size - 1) {
             if (newRow[i] != 0 && newRow[i] == newRow[i + 1]) {
@@ -102,24 +102,24 @@ class MainRepositoryImpl : MainRepository {
         return newRow
     }
 
-    override fun addNewTile(board: List<List<Int>>): List<List<Int>> {
+    override fun addNewTile(puzzleBoard: List<List<Int>>): List<List<Int>> {
         val emptyPositions = mutableListOf<Pair<Int, Int>>()
 
-        for (i in board.indices) {
-            for (j in board[i].indices) {
-                if (board[i][j] == 0) {
+        for (i in puzzleBoard.indices) {
+            for (j in puzzleBoard[i].indices) {
+                if (puzzleBoard[i][j] == 0) {
                     emptyPositions.add(i to j)
                 }
             }
         }
 
-        if (emptyPositions.isEmpty()) return board
+        if (emptyPositions.isEmpty()) return puzzleBoard
 
         val (row, col) = emptyPositions.random()
 
         val newTileValue = if ((1..10).random() > 9) 4 else 2
 
-        return board.mapIndexed { i, rowList ->
+        return puzzleBoard.mapIndexed { i, rowList ->
             rowList.mapIndexed { j, value ->
                 if (i == row && j == col) newTileValue else value
             }

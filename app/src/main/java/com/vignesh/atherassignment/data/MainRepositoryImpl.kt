@@ -12,6 +12,34 @@ class MainRepositoryImpl : MainRepository {
         }
     }
 
+    override fun checkGameOver(board: List<List<Int>>): Boolean {
+        if (board.any { row -> row.contains(0) }) {
+            return false
+        }
+
+        for (i in 0 until 4) {
+            for (j in 0 until 3) {
+                if (board[i][j] == board[i][j + 1]) {
+                    return false
+                }
+            }
+        }
+
+        for (j in 0 until 4) {
+            for (i in 0 until 3) {
+                if (board[i][j] == board[i + 1][j]) {
+                    return false
+                }
+            }
+        }
+
+        return true
+    }
+
+    override fun puzzleSolved(board: List<List<Int>>): Boolean {
+        return board.flatten().any { it == 2048 }
+    }
+
     override fun swipeLeft(board: List<List<Int>>): List<List<Int>> {
         return board.map { row ->
             val compressedRow = compressTiles(row)

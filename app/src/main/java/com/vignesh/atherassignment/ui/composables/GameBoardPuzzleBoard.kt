@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 @Composable
-fun GameBoard(
+fun GameBoardPuzzleBoard(
     board: List<List<Int>>,
     modifier: Modifier = Modifier
 ) {

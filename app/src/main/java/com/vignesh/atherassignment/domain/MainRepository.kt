@@ -9,4 +9,6 @@ interface MainRepository {
     fun compressTiles(row: List<Int>): List<Int>
     fun merge(row: List<Int>): List<Int>
     fun addNewTile(board: List<List<Int>>): List<List<Int>>
+    fun puzzleSolved(board: List<List<Int>>): Boolean
+    fun checkGameOver(board: List<List<Int>>): Boolean
 }

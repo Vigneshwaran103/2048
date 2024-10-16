@@ -17,7 +17,7 @@ class MainViewModel(
 
     fun handleIntent(intent: GameIntent) {
         when (intent) {
-            GameIntent.Restart -> restartGame()
+            GameIntent.Restart -> restartPuzzle()
             is GameIntent.Swipe -> {
                 processSwipe(direction = intent.direction)
             }
@@ -26,7 +26,7 @@ class MainViewModel(
 
     init {
         state = state.copy(
-            board = resetGame(),
+            board = resetPuzzleBoard(),
         )
     }
 
@@ -48,16 +48,18 @@ class MainViewModel(
             }
 
             state = state.copy(
-                board = updatedBoard
+                board = updatedBoard,
+                isGameOver = repository.checkGameOver(board = updatedBoard),
+                puzzleSolved = repository.puzzleSolved(board = updatedBoard)
             )
         }
     }
 
-    private fun restartGame() {
-        state = state.copy(board = resetGame())
+    private fun restartPuzzle() {
+        state = state.copy(board = resetPuzzleBoard(), isGameOver = false, puzzleSolved = false)
     }
 
-    private fun resetGame(): List<List<Int>> {
+    private fun resetPuzzleBoard(): List<List<Int>> {
         var board = List(4) { List(4) { 0 } }
         board = addNewTile(board)
         board = addNewTile(board)
@@ -69,18 +71,19 @@ class MainViewModel(
     }
 
     private fun swipeLeft(board: List<List<Int>>): List<List<Int>> {
-        return  repository.swipeLeft(board = board)
+        return repository.swipeLeft(board = board)
     }
+
     private fun swipeRight(board: List<List<Int>>): List<List<Int>> {
         return repository.swipeRight(board = board)
     }
 
     private fun swipeUp(board: List<List<Int>>): List<List<Int>> {
-        return  repository.swipeUp(board = board)
+        return repository.swipeUp(board = board)
     }
 
     private fun swipeDown(board: List<List<Int>>): List<List<Int>> {
-        return  repository.swipeDown(board = board)
+        return repository.swipeDown(board = board)
     }
 }
 

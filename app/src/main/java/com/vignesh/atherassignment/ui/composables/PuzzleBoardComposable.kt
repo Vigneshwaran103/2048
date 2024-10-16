@@ -2,7 +2,7 @@ package com.vignesh.atherassignment.ui.composables
 
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -13,7 +13,8 @@ import androidx.compose.ui.input.pointer.pointerInput
 import com.vignesh.atherassignment.SwipeDirection
 
 @Composable
-fun GameBoardWithSwipe(
+fun PuzzleBoardComposable(
+    modifier: Modifier= Modifier,
     board: List<List<Int>>,
     onSwipe: (SwipeDirection) -> Unit
 ) {
@@ -22,8 +23,8 @@ fun GameBoardWithSwipe(
     var offsetY by remember { mutableFloatStateOf(0f) }
 
     Box(
-        modifier = Modifier
-            .fillMaxSize()
+        modifier = modifier
+            .fillMaxWidth()
             .pointerInput(Unit) {
                 detectDragGestures(
                     onDragEnd = {
@@ -44,6 +45,6 @@ fun GameBoardWithSwipe(
                 )
             }
     ) {
-        GameBoard(board)
+        GameBoardPuzzleBoard(board)
     }
 }
